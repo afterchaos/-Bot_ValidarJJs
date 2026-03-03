@@ -10,6 +10,10 @@ import asyncio
 from unittest.mock import Mock, AsyncMock
 
 
+from src.utils.config import BotConfig
+from src.main import PunishmentRequestSystem
+
+
 def test_historico_punicoes_role_validation():
     """
     Testa se o comando /historico-punicoes agora usa a mesma validação de cargos
@@ -17,35 +21,45 @@ def test_historico_punicoes_role_validation():
     """
     print("Testando validação de cargos no comando /historico-punicoes...")
     
+    # Configura cargos permitidos no BotConfig
+    BotConfig.PunishmentSystem.ALLOWED_ROLES_IDS = [111111111, 222222222]
+    
+    # Simula um bot
+    mock_bot = Mock()
+    
+    # Cria o sistema de punição real
+    system = PunishmentRequestSystem(mock_bot)
+    
     # Simula um membro sem permissão
     mock_member_no_permission = Mock()
     mock_member_no_permission.id = 123456789
+    mock_member_no_permission.guild = Mock()
     mock_member_no_permission.roles = []  # Sem cargos
     
     # Simula um membro com permissão
     mock_member_with_permission = Mock()
     mock_member_with_permission.id = 987654321
+    mock_member_with_permission.guild = Mock()
     mock_role = Mock()
     mock_role.id = 111111111
     mock_member_with_permission.roles = [mock_role]
-    
-    # Simula o sistema de punição
-    mock_system = Mock()
     
     # Testa a validação de permissões
     print("  Testando validação de permissões...")
     
     # Caso 1: Usuário sem permissão
     print("    - Usuário sem permissão...")
-    has_permission, message = mock_system.validate_user_permissions(mock_member_no_permission)
+    has_permission, message = system.validate_user_permissions(mock_member_no_permission)
     print(f"      Resultado: {has_permission}")
     print(f"      Mensagem: {message}")
+    assert has_permission is False
     
     # Caso 2: Usuário com permissão
     print("    - Usuário com permissão...")
-    has_permission, message = mock_system.validate_user_permissions(mock_member_with_permission)
+    has_permission, message = system.validate_user_permissions(mock_member_with_permission)
     print(f"      Resultado: {has_permission}")
     print(f"      Mensagem: {message}")
+    assert has_permission is True
     
     print("  Validação de permissões concluída!")
     print()

@@ -13,7 +13,7 @@ from datetime import datetime
 # Adiciona o diretório atual ao path para importar os módulos
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config import BotConfig, validate_config
+from src.utils.config import BotConfig, validate_config
 
 
 def test_config_validation():

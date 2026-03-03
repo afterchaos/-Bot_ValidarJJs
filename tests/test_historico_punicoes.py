@@ -14,9 +14,9 @@ import os
 # Adiciona o caminho do projeto ao sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config import BotConfig
-from data_manager import data_manager
-from main import PunishmentRequestSystem
+from src.utils.config import BotConfig
+from src.utils.data_manager import data_manager
+from src.main import PunishmentRequestSystem
 
 
 class MockUser:
@@ -93,7 +93,12 @@ class MockBot:
         return self.users.get(user_id)
 
 
-async def test_historico_punicoes():
+def test_historico_punicoes():
+    """Wrapper síncrono para o teste assíncrono."""
+    asyncio.run(_test_historico_punicoes_internal())
+
+
+async def _test_historico_punicoes_internal():
     """Testa o comando /historico-punicoes."""
     print("Testando comando /historico-punicoes...")
     
@@ -103,11 +108,11 @@ async def test_historico_punicoes():
     # Cria o sistema de punições
     punishment_system = PunishmentRequestSystem(bot)
     
-    # Cria usuários de teste
-    user1 = MockUser(123456789, "Solicitante1")
-    user2 = MockUser(987654321, "Punido1")
-    user3 = MockUser(111222333, "Solicitante2")
-    user4 = MockUser(444555666, "Punido2")
+    # Cria usuários de teste (MockMember para serem aceitos como disnake.Member)
+    user1 = MockMember(123456789, "Solicitante1")
+    user2 = MockMember(987654321, "Punido1")
+    user3 = MockMember(111222333, "Solicitante2")
+    user4 = MockMember(444555666, "Punido2")
     
     bot.users = {
         123456789: user1,
@@ -175,7 +180,7 @@ async def test_historico_punicoes():
     )
     
     try:
-        await punishment_system.historico_punicoes(interaction_no_permission)
+        await punishment_system.historico_punicoes(interaction_no_permission, user2)
         if interaction_no_permission.followup_sent:
             print("Comando corretamente bloqueado para usuario sem permissao")
         else:
@@ -193,7 +198,7 @@ async def test_historico_punicoes():
     )
     
     try:
-        await punishment_system.historico_punicoes(interaction_with_permission)
+        await punishment_system.historico_punicoes(interaction_with_permission, user2)
         if interaction_with_permission.followup_sent:
             print("Comando executado com sucesso para usuario com permissao")
             print("Embed enviado corretamente")

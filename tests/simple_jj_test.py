@@ -14,7 +14,7 @@ import tempfile
 # Adiciona o caminho do módulo ao sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from jj_validation_system import JJValidationSystem
+from src.cogs.jj_validation_system import JJValidationSystem
 
 
 class MockBot:

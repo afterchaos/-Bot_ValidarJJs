@@ -15,7 +15,7 @@ from datetime import datetime
 # Adiciona o caminho do módulo ao sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from jj_validation_system import JJValidationSystem
+from src.cogs.jj_validation_system import JJValidationSystem
 
 
 class MockBot:
@@ -53,7 +53,7 @@ class MockMessage:
 class TestJJValidation:
     """Testes para o sistema de validação JJ's."""
     
-    def __init__(self):
+    def setup_method(self):
         self.bot = MockBot()
         self.jj_system = JJValidationSystem(self.bot)
         self.bot.cogs["JJValidationSystem"] = self.jj_system

@@ -15,8 +15,8 @@ import os
 # Adiciona o caminho do projeto para importar os módulos
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config import BotConfig
-from main import PunishmentRequestSystem
+from src.utils.config import BotConfig
+from src.main import PunishmentRequestSystem
 
 
 class TestClearPunishmentsRoles(unittest.TestCase):

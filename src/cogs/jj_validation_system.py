@@ -26,8 +26,8 @@ import disnake
 from disnake.ext import commands
 from disnake import Embed, Color
 
-from config import BotConfig
-from data_manager import data_manager
+from src.utils.config import BotConfig
+from src.utils.data_manager import data_manager
 
 
 class JJValidationSystem(commands.Cog):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Teste de Persistência de Dados
+Teste de Persistência de Dados (Versão Simples)
 
 Este script testa o sistema de persistência de dados do bot de punições.
 """
@@ -14,41 +14,41 @@ from datetime import datetime
 # Adiciona o caminho do projeto ao sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data_manager import DataManager
+from src.utils.data_manager import DataManager
 
 
 def test_persistence_system():
     """
     Testa o sistema de persistência de dados.
     """
-    print("🧪 Testando Sistema de Persistência de Dados")
+    print("Testando Sistema de Persistencia de Dados")
     print("=" * 50)
     
     # Cria um diretório temporário para testes
     with tempfile.TemporaryDirectory() as temp_dir:
-        print(f"📁 Diretório de teste: {temp_dir}")
+        print(f"Diretorio de teste: {temp_dir}")
         
         # Inicializa o gerenciador de dados
         data_manager = DataManager(temp_dir)
         
         # Teste 1: Carregar dados vazios
-        print("\n1️⃣ Teste: Carregar dados vazios")
+        print("\nTeste 1: Carregar dados vazios")
         punishments, counter = data_manager.load_punishments()
         pending = data_manager.load_pending_punishments()
         
         assert len(punishments) == 0, "Deveria começar com 0 punições"
         assert counter == 1, "Contador deveria começar em 1"
         assert len(pending) == 0, "Deveria começar com 0 estados pendentes"
-        print("✅ Dados vazios carregados corretamente")
+        print("Dados vazios carregados corretamente")
         
         # Teste 2: Salvar e carregar punições
-        print("\n2️⃣ Teste: Salvar e carregar punições")
+        print("\nTeste 2: Salvar e carregar punições")
         test_punishments = {
             1: {
                 "solicitante": 123456789,
                 "punido": 987654321,
                 "quantidade": 50,
-                "motivo": "Teste de persistência",
+                "motivo": "Teste de persistencia",
                 "permissao": 111111111,
                 "status": "pendente",
                 "data": datetime.now().timestamp()
@@ -74,10 +74,10 @@ def test_persistence_system():
         assert loaded_counter == 3, "Contador deveria ser 3"
         assert loaded_punishments[1]["quantidade"] == 50, "Quantidade deveria ser 50"
         assert loaded_punishments[2]["status"] == "aplicada", "Status deveria ser aplicada"
-        print("✅ Punições salvas e carregadas corretamente")
+        print("Punições salvas e carregadas corretamente")
         
         # Teste 3: Salvar e carregar estados pendentes
-        print("\n3️⃣ Teste: Salvar e carregar estados pendentes")
+        print("\nTeste 3: Salvar e carregar estados pendentes")
         test_pending = {
             123456789: {
                 "solicitante": 123456789,
@@ -98,10 +98,10 @@ def test_persistence_system():
         assert len(loaded_pending) == 1, "Deveria ter 1 estado pendente"
         assert loaded_pending[123456789]["quantidade"] == 10, "Quantidade deveria ser 10"
         assert loaded_pending[123456789]["status"] == "aguardando_foto", "Status deveria ser aguardando_foto"
-        print("✅ Estados pendentes salvos e carregados corretamente")
+        print("Estados pendentes salvos e carregados corretamente")
         
         # Teste 4: Backup de punições
-        print("\n4️⃣ Teste: Backup de punições")
+        print("\nTeste 4: Backup de punições")
         backup_file = data_manager.backup_punishments()
         
         assert backup_file != "", "Backup deveria retornar um caminho"
@@ -114,10 +114,10 @@ def test_persistence_system():
         assert "punishments" in backup_data, "Backup deveria conter punições"
         assert "counter" in backup_data, "Backup deveria conter contador"
         assert len(backup_data["punishments"]) == 2, "Backup deveria ter 2 punições"
-        print("✅ Backup criado corretamente")
+        print("Backup criado corretamente")
         
         # Teste 5: Estatísticas
-        print("\n5️⃣ Teste: Estatísticas")
+        print("\nTeste 5: Estatísticas")
         stats = data_manager.get_statistics()
         
         assert "total_punishments" in stats, "Estatísticas deveriam conter total_punishments"
@@ -130,20 +130,20 @@ def test_persistence_system():
         assert stats["total_pending_states"] == 1, "Total de estados pendentes deveria ser 1"
         assert stats["next_id"] == 3, "Próximo ID deveria ser 3"
         assert stats["total_jjs_applied"] == 75, "Total de JJ's deveria ser 75"
-        print("✅ Estatísticas geradas corretamente")
+        print("Estatísticas geradas corretamente")
         
         # Teste 6: Limpar estados pendentes
-        print("\n6️⃣ Teste: Limpar estados pendentes")
+        print("\nTeste 6: Limpar estados pendentes")
         data_manager.clear_pending_punishments()
         
         # Carrega novamente
         cleared_pending = data_manager.load_pending_punishments()
         
         assert len(cleared_pending) == 0, "Deveria ter 0 estados pendentes após limpeza"
-        print("✅ Estados pendentes limpos corretamente")
+        print("Estados pendentes limpos corretamente")
         
         # Teste 7: Persistência após reinicialização
-        print("\n7️⃣ Teste: Persistência após reinicialização")
+        print("\nTeste 7: Persistência após reinicialização")
         # Cria um novo gerenciador de dados no mesmo diretório
         new_data_manager = DataManager(temp_dir)
         
@@ -154,9 +154,9 @@ def test_persistence_system():
         assert len(new_punishments) == 2, "Novo gerenciador deveria carregar 2 punições"
         assert new_counter == 3, "Novo gerenciador deveria carregar contador 3"
         assert len(new_pending) == 0, "Novo gerenciador deveria carregar 0 estados pendentes"
-        print("✅ Dados persistidos corretamente após reinicialização")
+        print("Dados persistidos corretamente após reinicialização")
         
-        print("\n🎉 Todos os testes de persistência passaram!")
+        print("\nTodos os testes de persistencia passaram!")
         print("=" * 50)
 
 
@@ -164,7 +164,7 @@ def test_file_structure():
     """
     Testa a estrutura dos arquivos de dados.
     """
-    print("\n📁 Testando Estrutura de Arquivos")
+    print("\nTestando Estrutura de Arquivos")
     print("=" * 30)
     
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -196,21 +196,21 @@ def test_file_structure():
         
         assert isinstance(pending_data, dict), "Estados pendentes deveriam ser um dicionário"
         
-        print("✅ Estrutura de arquivos correta")
+        print("Estrutura de arquivos correta")
 
 
 def test_error_handling():
     """
     Testa o tratamento de erros do sistema de persistência.
     """
-    print("\n⚠️ Testando Tratamento de Erros")
+    print("\nTestando Tratamento de Erros")
     print("=" * 30)
     
     with tempfile.TemporaryDirectory() as temp_dir:
         data_manager = DataManager(temp_dir)
         
         # Teste 1: Arquivo corrompido
-        print("1️⃣ Teste: Arquivo corrompido")
+        print("Teste 1: Arquivo corrompido")
         punishments_file = os.path.join(temp_dir, "punishments.json")
         
         # Cria um arquivo corrompido
@@ -222,18 +222,18 @@ def test_error_handling():
         
         assert len(punishments) == 0, "Deveria retornar punições vazias"
         assert counter == 1, "Deveria retornar contador padrão"
-        print("✅ Tratamento de arquivo corrompido")
+        print("Tratamento de arquivo corrompido")
         
         # Teste 2: Diretório inexistente (deve ser criado)
-        print("2️⃣ Teste: Diretório inexistente")
+        print("Teste 2: Diretório inexistente")
         non_existent_dir = os.path.join(temp_dir, "novo_diretorio")
         
         new_data_manager = DataManager(non_existent_dir)
         
         assert os.path.exists(non_existent_dir), "Diretório deveria ser criado"
-        print("✅ Diretório criado automaticamente")
+        print("Diretório criado automaticamente")
         
-        print("✅ Todos os testes de tratamento de erros passaram!")
+        print("Todos os testes de tratamento de erros passaram!")
 
 
 if __name__ == "__main__":
@@ -242,11 +242,11 @@ if __name__ == "__main__":
         test_file_structure()
         test_error_handling()
         
-        print("\n🎉 Testes de persistência concluídos com sucesso!")
-        print("O sistema de persistência está funcionando corretamente.")
+        print("\nTestes de persistencia concluidos com sucesso!")
+        print("O sistema de persistencia está funcionando corretamente.")
         
     except Exception as e:
-        print(f"\n❌ Erro nos testes de persistência: {e}")
+        print(f"\nErro nos testes de persistencia: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
