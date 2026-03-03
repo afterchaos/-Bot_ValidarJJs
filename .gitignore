@@ -1,0 +1,38 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Arquivos de log
+*.log
+logs/
+
+# Arquivos de cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de cache do VS Code
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Arquivos de cache do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de dependências virtuais
+venv/
+env/
+.venv/
+
+# Arquivos de backup
+*.bak
+*.tmp
+
+# Arquivos de IDE
+.idea/
+*.swp
+*.swo

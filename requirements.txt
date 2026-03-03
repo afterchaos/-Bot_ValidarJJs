@@ -1,0 +1,21 @@
+# Dependências do Sistema de Solicitação de Punição para Discord Bot
+
+# Biblioteca principal para integração com Discord
+disnake>=2.9.0
+
+# Gerenciamento de variáveis de ambiente
+python-dotenv>=1.0.0
+
+# Bibliotecas padrão do Python (não é necessário instalar)
+# - asyncio
+# - time
+# - datetime
+# - typing
+# - logging
+# - os
+
+# Para desenvolvimento (opcional)
+pytest>=7.0.0          # Para testes automatizados
+black>=22.0.0           # Para formatação de código
+flake8>=5.0.0           # Para linting de código
+mypy>=0.991             # Para type checking
