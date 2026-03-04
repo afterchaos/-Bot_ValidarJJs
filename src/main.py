@@ -1,19 +1,3 @@
-#!/usr/bin/env python3
-"""
-Sistema de Solicitação de Punição para Discord Bot
-
-Este módulo implementa um comando slash /solicitacao-de-punicao que permite
-militares solicitarem punições com validação de foto comprobatória.
-
-Funcionalidades:
-- Comando slash com validação de parâmetros
-- Armazenamento temporário em memória
-- Modo de espera para foto comprobatória
-- Timeout automático de 5 minutos
-- Validação de auto-punição e limites
-- Código modular e bem documentado
-"""
-
 import asyncio
 import time
 import sys
@@ -23,9 +7,9 @@ from typing import Dict, List, Optional, Tuple, Any
 import logging
 
 import disnake
-from disnake.ext import commands
+from disnake.ext import commands, tasks
 from disnake import ApplicationCommandInteraction, Embed, Color, File
-from disnake.enums import ButtonStyle
+from disnake.enums import ButtonStyle, ActivityType
 from disnake.ui import Button, View
 
 # Adiciona o diretório atual ao Python path para permitir imports relativos
@@ -2286,6 +2270,43 @@ class Bot(commands.Bot):
             intents=intents,
             test_guilds=BotConfig.TEST_GUILDS
         )
+        
+        # Status rotativos do bot
+        self.status_messages = [
+            "Exército Brasileiro",
+            "Monitorando Cabos",
+            "Administrando a ESA"
+        ]
+        self.current_status_index = 0
+        
+        # Inicia a tarefa de mudança de status
+        self.change_status.start()
+    
+    @tasks.loop(seconds=30)
+    async def change_status(self):
+        """Altera o status do bot a cada 30 segundos."""
+        if self.status_messages:
+            # Seleciona o próximo status
+            status_text = self.status_messages[self.current_status_index]
+            
+            # Cria a atividade com o status
+            activity = disnake.Activity(
+                type=ActivityType.playing,
+                name=status_text
+            )
+            
+            # Atualiza o status do bot
+            await self.change_presence(activity=activity)
+            
+            # Atualiza o índice para o próximo status
+            self.current_status_index = (self.current_status_index + 1) % len(self.status_messages)
+            
+            self.logger.info(f"Status do bot atualizado para: {status_text}")
+    
+    @change_status.before_loop
+    async def before_change_status(self):
+        """Aguarda o bot estar pronto antes de iniciar a tarefa de mudança de status."""
+        await self.wait_until_ready()
     
     async def on_ready(self):
         logging.basicConfig(
