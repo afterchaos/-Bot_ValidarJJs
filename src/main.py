@@ -2271,6 +2271,9 @@ class Bot(commands.Bot):
             test_guilds=BotConfig.TEST_GUILDS
         )
         
+        # Configura o logger para a classe Bot
+        self.logger = logging.getLogger(__name__)
+        
         # Status rotativos do bot
         self.status_messages = [
             "Exército Brasileiro",
